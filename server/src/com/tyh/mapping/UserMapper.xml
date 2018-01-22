@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyh.dao.UserMapper" >
+	<!-- List<User> listAllUser();
+	
+	User getUser(String UserId);
+	
+	void insertUser(User user);
+	
+	int getCount(User user);
+	
+	void updateUser(User user);
+	
+	
+	private String user_id;//客户唯一标识
+    private String user_name;
+    private String id_card;
+    private String phone;
+    private String password;
+    private String nick_name;
+    private String gesture_password;
+    private String gesturepassword_flag;//true    false -->
+	
+	<resultMap type="com.tyh.entity.User" id="userResultMap">
+		<result column="user_id" property="user_id"/>
+		<result column="user_name" property="user_name"/>
+		<result column="id_card" property="id_card"/>
+		<result column="phone" property="phone"/>
+		<result column="password" property="password"/>
+		<result column="nick_name" property="nick_name"/>
+		<result column="gesture_password" property="gesture_password"/>
+		<result column="gesturepassword_flag" property="gesturepassword_flag"/>
+	</resultMap>
+		<select id="getUser" parameterType="com.tyh.entity.User" resultMap="userResultMap">
+			select * from User where 1=1
+				and (id_card = #{username} OR phone=#{username} OR nick_name=#{username})
+		</select>
+		<select id="getCount" parameterType="com.tyh.entity.User" resultMap="int">
+			select  count(*)  from User where 1=1
+				and (id_card = #{username} OR phone=#{username} OR nick_name=#{username})
+		</select>
+		<select id="getId_cardCount" parameterType="com.tyh.entity.User" resultMap="int">
+			select  count(*)  from User where 1=1
+				and id_card = #{id_card} 
+		</select>
+		<select id="getPhoneCount" parameterType="com.tyh.entity.User" resultMap="int">
+			select  count(*)  from User where 1=1
+				and  phone=#{phone} 
+		</select>
+		<select id="getNick_nameCount" parameterType="com.tyh.entity.User" resultMap="int">
+			select  count(*)  from User where 1=1
+				and  nick_name=#{nick_name}
+		</select>
+		<insert id="insertUser" parameterType="com.tyh.entity.User">
+			insert into User
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				user_id,
+				<if test="user_name != null">
+					user_name,
+				</if>
+				<if test="id_card != null">
+					id_card,
+				</if>
+				<if test="phone != null">
+					phone,
+				</if>
+				<if test="password != null">
+					password,
+				</if>
+				<if test="nick_name != null">
+					nick_name,
+				</if>
+				<if test="gesture_password != null">
+					gesture_password,
+				</if>
+				<if test="gesturepassword_flag != null">
+					gesturepassword_flag,
+				</if>
+			</trim>
+			<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+					#{user_id,jdbcType=VARCHAR},
+				<if test="user_name != null">
+					#{user_name,jdbcType=VARCHAR},
+				</if>
+				<if test="id_card != null">
+					#{id_card,jdbcType=VARCHAR},
+				</if>
+				<if test="phone != null">
+					#{phone,jdbcType=VARCHAR},
+				</if>
+				<if test="password != null">
+					#{password,jdbcType=VARCHAR},
+				</if>
+				<if test="nick_name != null">
+					#{nick_name,jdbcType=VARCHAR},
+				</if>
+				<if test="gesture_password != null">
+					#{gesture_password,jdbcType=VARCHAR},
+				</if>
+				<if test="gesturepassword_flag != null">
+					#{gesturepassword_flag,jdbcType=VARCHAR},
+				</if>
+			</trim>
+	</insert>
+	
+	<update id="updateUser" parameterType="com.tyh.entity.User">
+		update User set 
+			user_id=#{user_id},
+			user_name=#{user_name},
+			<if test="id_card!=null and id_card!=''">
+				,id_card=#{id_card} 
+			</if>
+			<if test="phone!=null and phone!=''">
+				,phone=#{phone} 
+			</if>
+			<if test="password!=null and password!=''">
+				,password=#{password} 
+			</if>
+			<if test="nick_name!=null and nick_name!=''">
+				,nick_name=#{nick_name} 
+			</if>
+			<if test="gesture_password!=null and gesture_password!=''">
+				,gesture_password=#{gesture_password} 
+			</if>
+			<if test="gesturepassword_flag!=null and gesturepassword_flag!=''">
+				,gesturepassword_flag=#{gesturepassword_flag} 
+			</if>
+		where user_id=#{user_id}
+	</update>
+</mapper>
